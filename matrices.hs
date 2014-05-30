@@ -4,22 +4,20 @@
 -- A beta
 
 module Main (
-	singleton_matrix -- :: Element -> Matrix,
-	add_matrices     -- :: Matrix -> Matrix -> Matrix,
+	singleton_matrix, -- :: Element -> Matrix
+	add_matrices,     -- :: Matrix -> Matrix -> Matrix
 ) where
 
-data Element = Float
-	deriving Eq, Ord, Num
+--data Element = Float
+	--deriving (Eq, Ord, Enum)
 
 
-type Row     = [Element]
-	deriving show
+type Row     = [Float]
 
 
 type Matrix  = [Row]
-	deriving show
 
-singleton_matrix :: Element -> Matrix
+singleton_matrix :: Float -> Matrix
 singleton_matrix a = [[a]]
 
 
