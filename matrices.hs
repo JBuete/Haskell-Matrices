@@ -3,14 +3,39 @@
 -- An Implementation of Matrices in Haskell
 -- A beta
 
+{-# LANGUAGE FlexibleInstances, OverlappingInstances, IncoherentInstances #-}
+
 module Main (
+    Matrix, 
     singleton_matrix, -- :: Element -> Matrix
+    identity_matrix,  -- :: Integer -> Matrix
     add_matrices,     -- :: Matrix -> Matrix -> Matrix
 ) where
+
+import Text.Printf (printf)
 
 type Row     = [Float]
 
 type Matrix  = [Row]
+
+instance Show (Matrix) where
+    show matrix = show_matrix matrix
+        where
+            show_element :: Float -> String
+            show_element element = printf "%-3.2f" element
+
+            show_rows :: Row -> String
+            show_rows row = case row of 
+                []    -> ""
+                [x]   -> show_element x
+                x:xs  -> (show_element x) ++ "  " ++ show_rows xs
+
+            show_matrix :: Matrix -> String
+            show_matrix matrix = case matrix of 
+                []    -> ""
+                [x]   -> "| " ++ show_rows x ++ " |"
+                x:xs  -> "| " ++ (show_rows x)  ++ " |\n" ++ show_matrix xs
+
 
 singleton_matrix :: Float -> Matrix
 singleton_matrix a = [[a]]
