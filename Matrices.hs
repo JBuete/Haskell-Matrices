@@ -46,6 +46,18 @@ instance Show (Matrix) where
                 [x]   -> "| " ++ show_rows x ++ " |"
                 x:xs  -> "| " ++ show_rows x ++ " |\n" ++ show_matrix xs
 
+instance Show (Vector) where
+    show vector = show_vector vector
+        where
+            show_vect_elems :: Float -> String
+            show_vect_elems element = "| " ++ printf "%-3.2f" element ++ " |"
+
+            show_vector :: Vector -> String
+            show_vector vector = case vector of
+                []    -> ""
+                [x]   -> show_vect_elems x
+                x:xs  -> show_vect_elems x ++ "\n" ++ show_vector xs
+
 
 singleton_matrix :: Float -> Matrix
 singleton_matrix a = [[a]]
