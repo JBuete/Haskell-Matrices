@@ -4,11 +4,12 @@
 -- A beta
 
 module Algebra (
-    add_matrices,     -- :: Matrix -> Matrix -> Matrix
-    sub_matrices,     -- :: Matrix -> Matrix -> Matrix
-    scale_matrix,     -- :: Float -> Matrix -> Matrix
-    transpose_matrix, -- :: Matrix -> Matrix
-    apply_vector,     -- :: Matrix -> Vector -> Vector
+    add_matrices,          -- :: Matrix -> Matrix -> Matrix
+    sub_matrices,          -- :: Matrix -> Matrix -> Matrix
+    scale_matrix,          -- :: Float -> Matrix -> Matrix
+    transpose_matrix,      -- :: Matrix -> Matrix
+    apply_vector,          -- :: Matrix -> Vector -> Vector
+    matrix_multiplication, -- :: Matrix -> Matrix -> Matrix
 ) where
 
 import Matrices
@@ -58,7 +59,7 @@ apply_vector matrix vector = map (row_mult vector) matrix
                                     row_mult vector row = sum (map (tuple_mult) (zip  vector row))
 
 
-
-
+matrix_multiplication :: Matrix -> Matrix -> Matrix
+matrix_multiplication matrix_a matrix_b = transpose_matrix (map (apply_vector matrix_a) (transpose_matrix matrix_b))
 
 
