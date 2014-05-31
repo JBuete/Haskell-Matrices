@@ -4,6 +4,8 @@
 -- 
 -- Jacob Buete 2014
 
+{-# LANGUAGE FlexibleInstances, OverlappingInstances, IncoherentInstances #-}
+
 module Matrices (
     Matrix,
     Row,

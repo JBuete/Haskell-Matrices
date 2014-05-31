@@ -3,8 +3,6 @@
 -- An Implementation of Matrices in Haskell
 -- A beta
 
-{-# LANGUAGE FlexibleInstances, OverlappingInstances, IncoherentInstances #-}
-
 module Algebra (
     add_matrices,     -- :: Matrix -> Matrix -> Matrix
     sub_matrices,     -- :: Matrix -> Matrix -> Matrix
@@ -12,6 +10,8 @@ module Algebra (
     transpose_matrix, -- :: Matrix -> Matrix
     apply_vector,     -- :: Matrix -> Vector -> Vector
 ) where
+
+import Matrices
 
 add_matrices :: Matrix -> Matrix -> Matrix
 add_matrices matrix_a matrix_b = compare_matrices (+) matrix_a matrix_b
