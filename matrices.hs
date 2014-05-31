@@ -7,13 +7,14 @@
 
 module Main (
     Matrix, 
-    singleton_matrix, -- :: Element -> Matrix
+    singleton_matrix, -- :: Float -> Matrix
     identity_matrix,  -- :: Integer -> Matrix
     add_matrices,     -- :: Matrix -> Matrix -> Matrix
     sub_matrices,     -- :: Matrix -> Matrix -> Matrix
     scale_matrix,     -- :: Float -> Matrix -> Matrix
     is_empty_matrix,  -- :: Matrix -> Bool
     transpose_matrix, -- :: Matrix -> Matrix
+    apply_vector,     -- :: Matrix -> Vector -> Vector
 ) where
 
 import Text.Printf (printf)
@@ -21,6 +22,8 @@ import Text.Printf (printf)
 type Row     = [Float]
 
 type Column  = [Float]
+
+type Vector  = [Float]
 
 type Matrix  = [Row]
 
@@ -108,3 +111,18 @@ generate_column :: Matrix -> Column
 generate_column matrix = case matrix of 
     [[]]   -> []
     x:xs ->map (head) matrix
+
+apply_vector :: Matrix -> Vector -> Vector
+apply_vector matrix vector = map (row_mult vector) matrix
+                                where 
+                                    tuple_mult :: (Num a) => (a,a) -> a
+                                    tuple_mult tuple = (fst tuple) * (snd tuple)
+
+                                    row_mult :: Vector -> Row -> Float
+                                    row_mult vector row = sum (map (tuple_mult) (zip  vector row))
+
+
+
+
+
+
