@@ -10,6 +10,7 @@ module Main (
     singleton_matrix, -- :: Element -> Matrix
     identity_matrix,  -- :: Integer -> Matrix
     add_matrices,     -- :: Matrix -> Matrix -> Matrix
+    sub_matrices,     -- :: Matrix -> Matrix -> Matrix
 ) where
 
 import Text.Printf (printf)
@@ -61,17 +62,23 @@ identity_matrix n = construct n []
                                 | dimension == 0 = matrix
                                 | otherwise      = construct (dimension - 1) ((insert_at dimension 1 (zero_row n)):matrix)
 
-
 add_matrices :: Matrix -> Matrix -> Matrix
-add_matrices matrix_a matrix_b  = case (matrix_a, matrix_b) of 
+add_matrices matrix_a matrix_b = compare_matrices (+) matrix_a matrix_b
+
+sub_matrices :: Matrix -> Matrix -> Matrix
+sub_matrices matrix_a matrix_b = compare_matrices (-) matrix_a matrix_b
+
+compare_matrices :: (Float -> Float -> Float) -> Matrix -> Matrix -> Matrix
+compare_matrices comparison matrix_a matrix_b  = case (matrix_a, matrix_b) of 
     ([],[])     -> []
     ([],y:ys)   -> error "Your matrices can't be add together"
     (x:xs,[])   -> error "Your matrices can't be add together"
-    (x:xs,y:ys) -> (add_rows x y): add_matrices xs ys
+    (x:xs,y:ys) -> (compare_rows x y): compare_matrices comparison xs ys
                     where 
-                        add_rows :: Row -> Row -> Row
-                        add_rows row_a row_b = case (row_a, row_b) of 
+                        compare_rows :: Row -> Row -> Row
+                        compare_rows row_a row_b = case (row_a, row_b) of 
                             ([],[])     -> []
                             ([],y:ys)   -> error "nope"
                             (x:xs,[])   -> error "nope"
-                            (x:xs,y:ys) -> (x+y):add_rows xs ys 
+                            (x:xs,y:ys) -> (comparison x y):compare_rows xs ys 
+
