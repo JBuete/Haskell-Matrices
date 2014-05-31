@@ -11,11 +11,16 @@ module Main (
     identity_matrix,  -- :: Integer -> Matrix
     add_matrices,     -- :: Matrix -> Matrix -> Matrix
     sub_matrices,     -- :: Matrix -> Matrix -> Matrix
+    scale_matrix,     -- :: Float -> Matrix -> Matrix
+    is_empty_matrix,  -- :: Matrix -> Bool
+    transpose_matrix, -- :: Matrix -> Matrix
 ) where
 
 import Text.Printf (printf)
 
 type Row     = [Float]
+
+type Column  = [Float]
 
 type Matrix  = [Row]
 
@@ -35,7 +40,7 @@ instance Show (Matrix) where
             show_matrix matrix = case matrix of 
                 []    -> ""
                 [x]   -> "| " ++ show_rows x ++ " |"
-                x:xs  -> "| " ++ (show_rows x)  ++ " |\n" ++ show_matrix xs
+                x:xs  -> "| " ++ show_rows x ++ " |\n" ++ show_matrix xs
 
 
 singleton_matrix :: Float -> Matrix
@@ -82,3 +87,24 @@ compare_matrices comparison matrix_a matrix_b  = case (matrix_a, matrix_b) of
                             (x:xs,[])   -> error "nope"
                             (x:xs,y:ys) -> (comparison x y):compare_rows xs ys 
 
+scale_matrix :: Float -> Matrix -> Matrix
+scale_matrix n matrix = case matrix of 
+    []   -> []
+    x:xs -> (map (* n) x):scale_matrix n xs 
+
+is_empty_matrix :: Matrix -> Bool
+is_empty_matrix matrix = case matrix of 
+    []   -> True 
+    x:xs -> case x of 
+                [] -> True && is_empty_matrix xs
+                _  -> False
+
+transpose_matrix :: Matrix -> Matrix
+transpose_matrix matrix 
+    | is_empty_matrix matrix = []
+    | otherwise              = (generate_column matrix):transpose_matrix (map (tail) matrix)
+
+generate_column :: Matrix -> Column
+generate_column matrix = case matrix of 
+    [[]]   -> []
+    x:xs ->map (head) matrix
