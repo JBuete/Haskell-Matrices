@@ -12,6 +12,7 @@ module Matrices (
     Column,
     Vector,
     singleton_matrix, -- :: Float -> Matrix
+    is_singleton,     -- :: Matrix -> Bool
     identity_matrix,  -- :: Integer -> Matrix
     is_empty_matrix,  -- :: Matrix -> Bool
 ) where
@@ -61,6 +62,9 @@ instance Show (Vector) where
 
 singleton_matrix :: Float -> Matrix
 singleton_matrix a = [[a]]
+
+is_singleton :: Matrix -> Bool
+is_singleton matrix = length matrix == 1 && length (head matrix) == 1
 
 insert_at :: Integer -> Float -> Row -> Row
 insert_at k element row 

@@ -43,9 +43,9 @@ element_at k row = case row of
 
 determinant :: Matrix -> Float
 determinant matrix 
-    | length matrix == 2 = det_two matrix
-    | length matrix == 1 = head (head matrix)
-    | otherwise          = find_det (length matrix) matrix
+    | length matrix == 2  = det_two matrix
+    | is_singleton matrix = head (head matrix)
+    | otherwise           = find_det (length matrix) matrix
                             where
                                 det_element :: Int -> Matrix -> Float
                                 det_element m matrix 
