@@ -11,6 +11,7 @@ module Algebra (
     apply_vector,          -- :: Matrix -> Vector -> Vector
     matrix_multiplication, -- :: Matrix -> Matrix -> Matrix
     det_two,               -- :: Matrix -> Float
+    determinant,           -- :: Matrix -> Float
     cofactor_matrix,       -- :: Matrix -> Matrix
     adjoint_matrix,        -- :: Matrix -> Matrix
 ) where
@@ -82,6 +83,29 @@ det_two matrix = (head top)*(last bottom) - (head bottom)*(last top)
                         top    = head matrix
                         bottom = last matrix
 
+element_at :: Int -> Row -> Float
+element_at k row = case row of 
+    []   -> error "Nope"
+    x:xs 
+        | k == 1    -> x
+        | otherwise -> element_at (k-1) xs
+
+determinant :: Matrix -> Float
+determinant matrix 
+    | length matrix == 2 = det_two matrix
+    | otherwise          = find_det (length matrix) matrix
+                            where
+                                det_element :: Int -> Matrix -> Float
+                                det_element m matrix 
+                                    | m`mod`2 == 0 = (-element_at m (head matrix)) * determinant (find_cofactor 1 m matrix)
+                                    | otherwise    = (element_at m (head matrix)) * determinant (find_cofactor 1 m matrix)
+
+                                find_det :: Int -> Matrix -> Float
+                                find_det m matrix 
+                                    | m == 0    = 0
+                                    | otherwise = (det_element m matrix) + find_det (m-1) matrix
+
+
 cofactor_matrix :: Matrix -> Matrix
 cofactor_matrix matrix = cofactor_aux (length matrix) (length (head matrix))
                             where 
@@ -98,3 +122,4 @@ cofactor_matrix matrix = cofactor_aux (length matrix) (length (head matrix))
 
 adjoint_matrix :: Matrix -> Matrix
 adjoint_matrix matrix = transpose_matrix (cofactor_matrix matrix)
+
