@@ -44,6 +44,7 @@ element_at k row = case row of
 determinant :: Matrix -> Float
 determinant matrix 
     | length matrix == 2 = det_two matrix
+    | length matrix == 1 = head (head matrix)
     | otherwise          = find_det (length matrix) matrix
                             where
                                 det_element :: Int -> Matrix -> Float
@@ -63,8 +64,8 @@ cofactor_matrix matrix = cofactor_aux (length matrix) (length (head matrix))
                                 cofactor_row :: Int -> Int -> Row
                                 cofactor_row n m
                                     | m == 0             = []
-                                    | (m+n) `mod` 2 == 1 = cofactor_row n (m-1) ++ [-det_two (find_cofactor n m matrix)]
-                                    | otherwise          = cofactor_row n (m-1) ++ [det_two (find_cofactor n m matrix)]
+                                    | (m+n) `mod` 2 == 1 = cofactor_row n (m-1) ++ [-determinant (find_cofactor n m matrix)]
+                                    | otherwise          = cofactor_row n (m-1) ++ [determinant (find_cofactor n m matrix)]
 
                                 cofactor_aux :: Int -> Int -> Matrix
                                 cofactor_aux n m 
