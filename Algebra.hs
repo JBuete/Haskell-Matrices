@@ -123,3 +123,7 @@ cofactor_matrix matrix = cofactor_aux (length matrix) (length (head matrix))
 adjoint_matrix :: Matrix -> Matrix
 adjoint_matrix matrix = transpose_matrix (cofactor_matrix matrix)
 
+inverse_matrix :: Matrix -> Matrix
+inverse_matrix matrix = scale_matrix (1/(determinant matrix)) (adjoint_matrix matrix)
+
+
