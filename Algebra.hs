@@ -10,6 +10,9 @@ module Algebra (
     transpose_matrix,      -- :: Matrix -> Matrix
     apply_vector,          -- :: Matrix -> Vector -> Vector
     matrix_multiplication, -- :: Matrix -> Matrix -> Matrix
+    det_two,               -- :: Matrix -> Float
+    cofactor_matrix,       -- :: Matrix -> Matrix
+    adjoint_matrix,        -- :: Matrix -> Matrix
 ) where
 
 import Matrices
@@ -63,3 +66,35 @@ matrix_multiplication :: Matrix -> Matrix -> Matrix
 matrix_multiplication matrix_a matrix_b = transpose_matrix (map (apply_vector matrix_a) (transpose_matrix matrix_b))
 
 
+remove_at :: Int -> [a] -> [a]
+remove_at k list = case list of 
+    []              -> error "List not that long"
+    x:xs 
+        | k == 1    -> xs
+        | otherwise -> x:remove_at (k-1) xs
+
+find_cofactor :: Int -> Int -> Matrix -> Matrix
+find_cofactor n m matrix = map (remove_at m) (remove_at n matrix)
+
+det_two :: Matrix -> Float
+det_two matrix = (head top)*(last bottom) - (head bottom)*(last top)
+                    where 
+                        top    = head matrix
+                        bottom = last matrix
+
+cofactor_matrix :: Matrix -> Matrix
+cofactor_matrix matrix = cofactor_aux (length matrix) (length (head matrix))
+                            where 
+                                cofactor_row :: Int -> Int -> Row
+                                cofactor_row n m
+                                    | m == 0             = []
+                                    | (m+n) `mod` 2 == 1 = cofactor_row n (m-1) ++ [-det_two (find_cofactor n m matrix)]
+                                    | otherwise          = cofactor_row n (m-1) ++ [det_two (find_cofactor n m matrix)]
+
+                                cofactor_aux :: Int -> Int -> Matrix
+                                cofactor_aux n m 
+                                    | n == 0    = []
+                                    | otherwise = cofactor_aux (n-1) m ++ [cofactor_row n m]
+
+adjoint_matrix :: Matrix -> Matrix
+adjoint_matrix matrix = transpose_matrix (cofactor_matrix matrix)
