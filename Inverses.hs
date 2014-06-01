@@ -77,7 +77,7 @@ adjoint_matrix matrix = transpose_matrix (cofactor_matrix matrix)
 
 inverse_matrix :: Matrix -> Matrix
 inverse_matrix matrix 
-	| is_singleton matrix = matrix
+	| is_singleton matrix = [[(1/head (head matrix))]]
 	| otherwise           = scale_matrix (1/(determinant matrix)) (adjoint_matrix matrix)
 
 
