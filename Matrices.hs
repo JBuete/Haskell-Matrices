@@ -13,7 +13,7 @@ module Matrices (
     Vector,
     singleton_matrix, -- :: Float -> Matrix
     is_singleton,     -- :: Matrix -> Bool
-    identity_matrix,  -- :: Integer -> Matrix
+    identity_matrix,  -- :: Int -> Matrix
     is_empty_matrix,  -- :: Matrix -> Bool
 ) where
 
@@ -66,7 +66,7 @@ singleton_matrix a = [[a]]
 is_singleton :: Matrix -> Bool
 is_singleton matrix = length matrix == 1 && length (head matrix) == 1
 
-insert_at :: Integer -> Float -> Row -> Row
+insert_at :: Int -> Float -> Row -> Row
 insert_at k element row 
     | k == 1    = element:(tail row)
     | otherwise = first :insert_at (k-1) element rest
@@ -74,15 +74,15 @@ insert_at k element row
                         first = head row
                         rest  = tail row
 
-zero_row :: Integer -> Row
+zero_row :: Int -> Row
 zero_row n 
     | n == 0    = []
     | otherwise = 0:zero_row (n-1)
 
-identity_matrix :: Integer -> Matrix
+identity_matrix :: Int -> Matrix
 identity_matrix n = construct n []
                         where
-                            construct :: Integer -> Matrix -> Matrix 
+                            construct :: Int -> Matrix -> Matrix 
                             construct dimension matrix  
                                 | dimension == 0 = matrix
                                 | otherwise      = construct (dimension - 1) ((insert_at dimension 1 (zero_row n)):matrix)
