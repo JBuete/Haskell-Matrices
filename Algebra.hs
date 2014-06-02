@@ -11,6 +11,7 @@ module Algebra (
     transpose_matrix,      -- :: Matrix -> Matrix
     apply_vector,          -- :: Matrix -> Vector -> Vector
     matrix_multiplication, -- :: Matrix -> Matrix -> Matrix
+    exponent_matrix,       -- :: Matrix -> Integer -> Matrix
 ) where
 
 import Matrices
@@ -63,5 +64,11 @@ apply_vector matrix vector = map (row_mult vector) matrix
 matrix_multiplication :: Matrix -> Matrix -> Matrix
 matrix_multiplication matrix_a matrix_b = transpose_matrix (map (apply_vector matrix_a) (transpose_matrix matrix_b))
 
-
+exponent_matrix :: Matrix -> Integer -> Matrix
+exponent_matrix matrix n = calculate matrix n 
+                            where
+                                calculate :: Matrix -> Integer -> Matrix
+                                calculate matrix2 n 
+                                    | n == 0    = identity_matrix (length matrix)
+                                    | otherwise = matrix_multiplication matrix2 (calculate matrix2 (n-1))
 
