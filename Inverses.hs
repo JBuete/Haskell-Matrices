@@ -26,7 +26,7 @@ remove_at k list = case list of
         | otherwise -> x:remove_at (k-1) xs
 
 find_cofactor :: Int -> Int -> Matrix -> Matrix
-find_cofactor n m matrix = map (remove_at m) (remove_at n matrix)
+find_cofactor n m matrix = map (remove_at m)  (remove_at n matrix)
 
 det_two :: Matrix -> Float
 det_two matrix = (head top)*(last bottom) - (head bottom)*(last top)
